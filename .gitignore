@@ -1,0 +1,15 @@
+# Binaries and Objects
+build/
+bin/
+*.o
+*.a
+*.so
+
+# IDEs and System
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Atari Disk Images (Temporary)
+*.st
