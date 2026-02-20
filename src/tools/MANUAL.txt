@@ -13,51 +13,56 @@ converting modern assets to managing legacy disk images.
 
 [ COMMAND REFERENCE ]
 
-1. STORAGE OPERATIONS
-   ------------------
+1. STORAGE & FILESYSTEM
+   --------------------
    st-mkdisk <file.st>
-     Creates a 720KB Double Density image.
+     Generates a standard 720KB Double Density image.
+   
+   st-check <file.st>
+     Validates the TOS boot sector checksum. Essential for bootable disks.
+     
+   st-dir <file.st>
+     Lists contents of the FAT12 root directory.
    
    st-inject <disk.st> <local_file> <atari_name.ext>
-     Moves a file onto the disk. Use 8.3 filename format.
+     Pushes a local file into the Atari disk image (8.3 format).
    
    st-extract <disk.st> <atari_name.ext> <local_dest>
-     Pulls a file off the disk for modern analysis.
+     Pulls legacy data off the disk back to the modern world.
 
-2. GRAPHICS & VIDEO
-   ----------------
+2. VIDEO & PALETTE
+   ---------------
    ste-palette <#hex_color>
-     Calculates the 12-bit hardware word. 
-     Ex: #FF0000 -> 0x0F00
+     Converts RGB Hex to 12-bit STE hardware words.
    
    st-planar <input.chunky> <output.bin>
-     Converts 8-bit color-indexed bytes to Atari 4-plane bitplanes.
+     Transforms 8-bit chunky pixels to Atari 4-plane bitplanes.
    
    pi1-to-png <input.pi1> <output.png>
-     Recovers DEGAS Elite art files.
+     Recovers DEGAS Elite (.PI1) art files as modern PNGs.
 
-3. AUDIO DMA
-   ---------
+3. AUDIO SAMPLES
+   -------------
    ste-dma-snd <unsigned.raw> <signed.snd>
-     Converts 8-bit unsigned audio to Atari Signed PCM.
+     Converts 8-bit unsigned audio to Atari STE Signed PCM.
    
    ste-snd-wav <signed.snd> <output.wav> <rate>
-     Converts Atari audio to modern WAV. Use rates: 6258, 12517, 25033, 50066.
+     Recovers Atari DMA audio to RIFF/WAV format.
+     Rates: 6258, 12517, 25033, 50066.
 
-4. REVERSE ENGINEERING
-   -------------------
+4. CODE & REVERSING
+   ----------------
    st-bin2rsx <binary> <array_name> [output.h]
-     Turns any binary into a C include file. Use this for sprites and sounds.
+     Binary-to-Header converter for C/ASM resource inclusion.
    
    st-disasm <binary>
-     Parses Motorola 68000 opcodes. 
+     Motorola 68000 instruction disassembler.
 
 [ PRO TIPS ]
 
-- Always use UPPERCASE for filenames when using st-inject/st-extract to
-  ensure maximum compatibility with older TOS versions.
-- If st-check fails, the disk may not be bootable on real hardware.
-- Align your audio samples to even memory addresses for the DMA chip!
+- Filenames on disk are case-insensitive but stored as UPPERCASE.
+- STE Palette words use a "nasty" bit-ordering; always use the tool for accuracy.
+- Checksums (st-check) must be recalculated if you modify the boot sector!
 
 _______________________________________________________________________________
 [ EOF - NO FURTHER DATA ]
