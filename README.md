@@ -1,19 +1,35 @@
-# Atari STE Toolkit 🕹️
+# Atari STE Toolkit 🕹️ v1.0
 
-A modern C++20 suite of tools for managing Atari ST/STE floppy disk images (.st). This toolkit allows you to create, verify, and inject files into disk images compatible with real hardware and emulators like Hatari or Steem.
+A comprehensive C++20 developer and recovery suite for the Atari ST/STE. This toolkit bridges the gap between modern Linux environments and 16-bit hardware, offering tools for filesystem management, media conversion, and 68k analysis.
 
 ---
 
-## 🛠️ Features
-* **st-mkdisk**: Create a standard 720KB (Double Sided/Double Density) bootable disk image.
-* **st-check**: Verify the boot sector checksum (TOS compatibility).
-* **st-dir**: List the contents of the root directory (FAT12).
-* **st-inject**: Inject local files into the disk image.
+## 🛠️ Tool Inventory
+
+### 💾 Filesystem & Disk Management
+* **st-mkdisk**: Create a standard 720KB (DD) bootable disk image.
+* **st-check**: Verify the TOS boot sector checksum.
+* **st-dir**: List files on a .ST image (FAT12).
+* **st-inject**: Inject local files into a disk image.
+* **st-extract**: Recover files from a disk image back to Linux.
+
+### 🎨 Graphics & Palette
+* **ste-palette**: Convert hex colors to Atari 12-bit (STE) hardware color words.
+* **st-planar**: Convert "chunky" pixels to Atari 4-plane bitplane data.
+* **pi1-to-png**: Recover DEGAS Elite (.PI1) images into modern PNGs.
+
+### 🔊 Digital Audio
+* **ste-dma-snd**: Convert raw 8-bit unsigned audio to STE-ready signed DMA samples.
+* **ste-snd-wav**: Wrap STE signed samples into a standard RIFF/WAV header.
+
+### 🔍 Development & Reversing
+* **st-bin2rsx**: Convert any binary data into a C/C++ header array for easy inclusion.
+* **st-disasm**: A lightweight Motorola 68000 disassembler for binary analysis.
 
 ---
 
 ## 🚀 Building the Toolkit
-Requires a C++20 compliant compiler and CMake 3.16+.
+Requires a C++20 compliant compiler (GCC 11+ or Clang 13+), CMake, and `wget` for dependency fetching.
 
 ```bash
 mkdir build && cd build
@@ -23,42 +39,29 @@ make
 
 ---
 
-## 📖 Usage Guide
+## 📖 Quick Start Examples
 
-### 1. Create a New Disk
-Creates a blank 720KB disk image with a valid Atari boot sector.
+**Create a disk and inject a program:**
 ```bash
-./st-mkdisk my_disk.st
+./st-mkdisk my_game.st
+./st-inject my_game.st local_code.tos AUTOEXEC.TOS
 ```
 
-### 2. Check Disk Integrity
-Verifies the TOS executable checksum in the boot sector.
+**Recover an old Degas image:**
 ```bash
-./st-check my_disk.st
+./pi1-to-png LEGACY.PI1 recovered.png
 ```
 
-### 3. Inject a File
-Copies a local file into the disk image's root directory.
-**Note:** Use 8.3 filename format for target names.
+**Convert a color for the STE palette:**
 ```bash
-./st-inject my_disk.st local_program.tos MYPROG.TOS
-```
-
-### 4. List Directory
-Displays the files currently stored on the disk image.
-```bash
-./st-dir my_disk.st
+./ste-palette "#FF8800"
+# Output: 0x0F10
 ```
 
 ---
 
-## 🏗️ Project Structure
-* `include/`: Header files for `libste`.
-* `src/libste/`: Core logic for disk I/O and FAT12 filesystem handling.
-* `src/tools/`: CLI implementations for the toolkit utilities.
-
----
-
-## ⚠️ Technical Notes
-* **Filesystem:** Supports FAT12 with 2 sectors per cluster (720KB standard).
-* **Alignment:** Ensure filenames provided to `st-inject` follow the 8.3 uppercase standard for best compatibility with TOS.
+## 🏗️ Technical Specifications
+* **Architecture:** C++20
+* **Disk Format:** 720KB, 80 tracks, 9 sectors per track, 2 sides.
+* **Filesystem:** FAT12 with 2 sectors per cluster.
+* **Audio Rates:** Supports 6.25kHz, 12.5kHz, 25kHz, and 50kHz STE DMA rates.
