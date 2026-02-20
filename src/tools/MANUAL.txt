@@ -1,0 +1,63 @@
+_______________________________________________________________________________
+         ___ _____ ___  ____  ___         
+        / _ /_  __ / _ |/ __ \/ _ \        Atari STE Toolkit v1.0
+       / __ |/ / / __ |/ _  / // /        Hardware & Software Bridge
+      /_/ |_/_/ /_/ |_/_/ \_\___/         Reference Manual v1.0
+_______________________________________________________________________________
+
+[ SYSTEM OVERVIEW ]
+
+This directory contains the source code for the ATARI STE TOOLKIT utilities.
+Each tool is designed to handle a specific stage of the pipeline: from 
+converting modern assets to managing legacy disk images.
+
+[ COMMAND REFERENCE ]
+
+1. STORAGE OPERATIONS
+   ------------------
+   st-mkdisk <file.st>
+     Creates a 720KB Double Density image.
+   
+   st-inject <disk.st> <local_file> <atari_name.ext>
+     Moves a file onto the disk. Use 8.3 filename format.
+   
+   st-extract <disk.st> <atari_name.ext> <local_dest>
+     Pulls a file off the disk for modern analysis.
+
+2. GRAPHICS & VIDEO
+   ----------------
+   ste-palette <#hex_color>
+     Calculates the 12-bit hardware word. 
+     Ex: #FF0000 -> 0x0F00
+   
+   st-planar <input.chunky> <output.bin>
+     Converts 8-bit color-indexed bytes to Atari 4-plane bitplanes.
+   
+   pi1-to-png <input.pi1> <output.png>
+     Recovers DEGAS Elite art files.
+
+3. AUDIO DMA
+   ---------
+   ste-dma-snd <unsigned.raw> <signed.snd>
+     Converts 8-bit unsigned audio to Atari Signed PCM.
+   
+   ste-snd-wav <signed.snd> <output.wav> <rate>
+     Converts Atari audio to modern WAV. Use rates: 6258, 12517, 25033, 50066.
+
+4. REVERSE ENGINEERING
+   -------------------
+   st-bin2rsx <binary> <array_name> [output.h]
+     Turns any binary into a C include file. Use this for sprites and sounds.
+   
+   st-disasm <binary>
+     Parses Motorola 68000 opcodes. 
+
+[ PRO TIPS ]
+
+- Always use UPPERCASE for filenames when using st-inject/st-extract to
+  ensure maximum compatibility with older TOS versions.
+- If st-check fails, the disk may not be bootable on real hardware.
+- Align your audio samples to even memory addresses for the DMA chip!
+
+_______________________________________________________________________________
+[ EOF - NO FURTHER DATA ]
